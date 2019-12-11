@@ -5,4 +5,5 @@ common shells are.
 - ksh
 
 $ - for regular user
+
 '#' - is for root user
