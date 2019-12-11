@@ -30,3 +30,18 @@ ls –ltr To list files with detailed info sorted by date and time with the newe
 ls –F   Shows you the file types – (/=dir), (@=link) and (*=executable).
 
 ls -la  To list all files including the hidden files with detailed info.
+
+
+# Absulute and relative path #
+
+Absolute Path:
+- Starts with /, for example: /home/user
+- Uses full path
+
+Relative Path:
+- Does not start with / - - Depends on your current directory.
+“.” is your current directory and “..” is your parent directory
+- Go to parent directory using relative path:
+cd ..
+- Change directory using full path
+cd /home/user.
