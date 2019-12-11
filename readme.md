@@ -7,3 +7,7 @@ common shells are.
 $ - for regular user
 
 '#' - is for root user
+
+
+# ls #
+
