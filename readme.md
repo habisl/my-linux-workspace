@@ -46,6 +46,52 @@ cd ..
 - Change directory using full path
 cd /home/user.
 
+# Using the find command #
+
+find / -name fi* -print
+
+Find = command
+
+/ = Path or location we want to search
+
+name = search option (search by name)
+
+print = action (print is default so no need to type it)
+
+delete = action
+
+Example:
+
+- Find all files named "file1": under / directory and delete them all:
+
+ find / -name files
+ 
+ find / -name files -delete
+ 
+ find / -name files
+
+- Find files smaller than 1 MB in root's home directory
+
+  find / -size -1M
+  
+- Find files smaller than 1 MB in current directory:
+
+  find . -size -1M
+  
+"." represents current directory
+
+- To find files in /usr, larger than 40MB
+
+Find /usr -size +40M:
+
+- Find files that were modified 4 days ago:
+
+find /var -mtime 4
+
+- Find help in man pages:
+
+man find 
+
 # Useful Commands for day to day job #
 
 ## 1 – SYSTEM INFORMATION ##
