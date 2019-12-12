@@ -46,59 +46,9 @@ cd ..
 - Change directory using full path
 cd /home/user.
 
-## Useful Commands for day to day job ##
+# Useful Commands for day to day job #
 
-Shell is an interface between the user and the kernel
-common shells are. 
-- bash
-- csh
-- ksh
-
-$ - for regular user
-
-'#' - is for root user
-
-
-# ls #
-
-ls -l : List files in the current directory with detailed info
-
-[root@internal ~]# ls -l
-total 6797952
-drwx------. 2 root    root         4096 Sep 21  2018 ansible
--rwx------. 1 root    root    205832192 Jan 30  2019 api-gateway-backup.tar
--rwx------. 1 root    root    205832192 Sep 15 20:28 api-gateway.tar
-
-permissions, Links, Owner(user), Group owner, size, Month, Day, Time, Filename
-
-ls –lh  To list files in the current directory with their size in human readable format.
-
-ls –lt  To list files in the current directory with detailed info sorted by date and time with the newest file first.
-
-ls –ltr To list files with detailed info sorted by date and time with the newest file first in reverse order.
-
-ls –F   Shows you the file types – (/=dir), (@=link) and (*=executable).
-
-ls -la  To list all files including the hidden files with detailed info.
-
-
-# Absulute and relative path #
-
-Absolute Path:
-- Starts with /, for example: /home/user
-- Uses full path
-
-Relative Path:
-- Does not start with / - - Depends on your current directory.
-“.” is your current directory and “..” is your parent directory
-- Go to parent directory using relative path:
-cd ..
-- Change directory using full path
-cd /home/user.
-
-## Useful Commands for day to day job ##
-
-# 1 – SYSTEM INFORMATION #
+## 1 – SYSTEM INFORMATION ##
 - Display Linux system information
 
 uname -a
@@ -133,7 +83,7 @@ w
 - Who you are logged in as
 whoami
 
-# 2 – HARDWARE INFORMATION #
+## 2 – HARDWARE INFORMATION ##
 
 - Display messages in kernel ring buffer
 dmesg
@@ -166,7 +116,7 @@ hdparm -tT /dev/sda
 badblocks -s /dev/sda
 
 
-# 3 – PERFORMANCE MONITORING AND STATISTICS #
+## 3 – PERFORMANCE MONITORING AND STATISTICS ##
 
 -  Display and manage the top processes
 top
@@ -206,7 +156,7 @@ watch df -h
 
 
 
-# 4 – USER INFORMATION AND MANAGEMENT # 
+## 4 – USER INFORMATION AND MANAGEMENT ## 
 
 -  Display the user and group ids of your current user.
 id
@@ -234,7 +184,7 @@ usermod -aG sales john
 
 
 
-# 5 – FILE AND DIRECTORY COMMANDS #
+## 5 – FILE AND DIRECTORY COMMANDS ##
 
 -  List all files in a long listing (detailed) format
 ls -al
@@ -289,7 +239,7 @@ tail -f file
 
 
 
-# 6 – PROCESS MANAGEMENT #
+## 6 – PROCESS MANAGEMENT ##
 
 -  Display your currently running processes
 ps
@@ -326,7 +276,7 @@ fg n
 
 
 
-# 7 – FILE PERMISSIONS #
+## 7 – FILE PERMISSIONS ##
 Linux chmod example
         PERMISSION      EXAMPLE
 
@@ -351,7 +301,7 @@ Linux chmod example
 
 
 
-# 8 – NETWORKING #
+## 8 – NETWORKING ##
 
 -  Display all network interfaces and ip address
 ifconfig -a
@@ -391,7 +341,7 @@ netstat -nutlp
 
  
 
-# 9 – ARCHIVES (TAR FILES) #
+## 9 – ARCHIVES (TAR FILES) ##
 
 -  Create tar named archive.tar containing directory.
 tar cf archive.tar directory
@@ -412,7 +362,7 @@ tar cjf archive.tar.bz2 directory
 tar xjf archive.tar.bz2
 
 
-# 10 – INSTALLING PACKAGES #
+## 10 – INSTALLING PACKAGES ##
 
 -  Search for a package by keyword.
 yum search keyword
@@ -437,7 +387,7 @@ make
 make install
 
 
-# 11 – SEARCH #
+## 11 – SEARCH ##
 
 -  Search for pattern in file
 grep pattern file
@@ -455,7 +405,7 @@ find /home/john -name 'prefix*'
 find /home -size +100M
 
 
-# 12 – SSH LOGINS #
+## 12 – SSH LOGINS ##
 
 -  Connect to host as your local username.
 ssh host
@@ -467,7 +417,7 @@ ssh user@host
 ssh -p port user@host
 
 
-# 13 – FILE TRANSFERS #
+## 13 – FILE TRANSFERS ##
 
 -  Secure copy file.txt to the /tmp folder on server
 scp file.txt server:/tmp
@@ -485,7 +435,7 @@ rsync -a /home /backups/
 rsync -avz /home server:/backups/
 
 
-# 14 – DISK USAGE #
+## 14 – DISK USAGE ##
 -  Show free and used space on mounted filesystems
 df -h
 
@@ -502,7 +452,7 @@ du -ah
 du -sh
 
 
-# 15 – DIRECTORY NAVIGATION # 
+## 15 – DIRECTORY NAVIGATION ## 
 
 -  To go up one level of the directory tree.  (Change into the parent directory.)
 cd ..
