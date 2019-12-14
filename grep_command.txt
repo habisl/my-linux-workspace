@@ -10,7 +10,7 @@ Example:
 - grep –v what file
 - grep –i a file
 - grep –n a file
-- grep ^user /etc/passwd
+- grep ^user /etc/passwd    - any line starting with the word user
 - grep –v ^# /ssh/sshd_config
 
 
