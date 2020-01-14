@@ -624,3 +624,11 @@ cd
 -  Change to the /etc directory
 
 cd /etc
+
+## 16 – wc Word Count ## 
+
+To print the number of lines in a file (or more specifically newline counts) use the -l option.
+
+wc -l /usr/share/dict/words
+
+235886 /usr/share/dict/words
