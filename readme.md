@@ -632,3 +632,10 @@ To print the number of lines in a file (or more specifically newline counts) use
 wc -l /usr/share/dict/words
 
 235886 /usr/share/dict/words
+
+To count the number of folders and files in a directory wc can be combined with the ls command. 
+By passing the -l options to ls it will each folder or line on a new line. 
+This can be piped to wc to give a count.
+
+ls -l | wc -l
+21
