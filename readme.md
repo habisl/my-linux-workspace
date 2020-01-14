@@ -638,4 +638,5 @@ By passing the -l options to ls it will each folder or line on a new line.
 This can be piped to wc to give a count.
 
 ls -l | wc -l
+
 21
