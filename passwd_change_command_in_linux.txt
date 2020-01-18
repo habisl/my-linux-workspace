@@ -1,0 +1,21 @@
+Table of Contents	
+passwd and chage Examples
+1. Change root Password on Ubuntu
+2. Change User Account Password 
+3. Expire User Password after 45 days
+4. User Password Expiration Warning
+5. Lock User Account on Ubuntu
+6. Unlock User Account on Linux Machine
+7. Check User Password Policy
+8. Check User Password Status
+9. Force User to Change His Password After First Login
+10. Forcefully expire User Password
+11. Disable User Account Expiry
+12. Remove User Password
+13. Set User Account Expiry
+14. Never allow User Password to become Inactive
+15. Force User Account to Lock after 7 days of inactivity
+16. Set Number of days(Age) between User Password Change
+17. Check other options with passwd and chage command
+
+https://www.cyberithub.com/passwd-and-chage-examples/?fbclid=IwAR38n4hePF_PL7QCGlP7m53rSBYamLfaGuSmb4UVxOmhkoiK2dNXAP-zCgE
