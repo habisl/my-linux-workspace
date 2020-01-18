@@ -1,0 +1,178 @@
+https://www.golinuxcloud.com/run-script-at-startup-boot-without-cron-linux/?fbclid=IwAR1GlWWFXUzJRD-37WNxUfTXRRwCKMYCOR860-I1Hu12SJVgEqQbzsmC8kY
+There can be various scenarios when you expect a script or command to be called at startup such as
+
+Execute a script after waiting for N minutes of startup
+Execute a script after all the systemd services are loaded
+Execute a script immediately after login prompt appears
+Execute a script just before the login prompt appears
+ 
+
+In this article I will cover below two topics as they are almost similar
+
+Run script at startup with systemd after network is reachable
+Execute script at starup after all the systemd services are loaded
+ 
+
+I will be using CentOS/RHEL 7/8 Linux node to verify the steps from this article to run script with systemd right before login prompt.
+
+ 
+
+Step 1: Overview on systemd
+I hope you are already familiar with below topics
+
+Overview on systemd and how it is different from legacy SysV scripts
+How to create a systemd unit file in Linux
+ 
+
+Step 2: Create Sample Script
+Now to run script at startup with systemd firstly we need a script or command. For the sake of this article I have create a dummy shell script /tmp/startup_script.sh which we will use for testing this article.
+
+[root@centos-8 ~]# cat /tmp/startup_script.sh
+#!/bin/bash
+SCRIPT_NAME=$(basename -- "$0")
+
+z=0
+for i in {1..5}; do
+    sleep 1m
+    ((z++))
+    wall $SCRIPT_NAME: finished minute ${z}
+done
+wall $SCRIPT_NAME: COMPLETELY FINISHED
+This script will continue to run for 5 minutes and will print an echo statement on the screen every minute as a broadcast message using wall command for all Linux users on the respective node. And at the end of 5th minute it will print a completed broadcast. With this we can also make sure that the script is not killed by systemd if it continues to run for 5 minutes.
+
+Provide executable permission to the script
+
+[root@centos-8 ~]# chmod u+x /tmp/startup_script.sh
+Enable the service to make sure this is called automatically after reboot
+
+Advertisements
+[root@centos-8 ~]# systemctl enable run-at-startup.service
+Created symlink /etc/systemd/system/default.target.wants/run-at-startup.service → /etc/systemd/system/run-at-startup.service.
+ 
+
+Step 3: Create systemd unit file for different scenario
+Step 3.1: Run script at startup with systemd after network becomes reachable
+In this scenario we will execute our script as soon as the network becomes reachable i.e. when network.target starts running during bootup stage by using After=network.target. The unit file should be located in either /usr/lib/systemd/system or /etc/systemd/system. I will place this under /etc/systemd/system as this is is used to place custom unit file.
+
+[root@centos-8 ~]# cat /etc/systemd/system/run-at-startup.service
+[Unit]
+Description=Run script at startup after network becomes reachable
+After=network.target
+
+[Service]
+Type=simple
+RemainAfterExit=yes
+ExecStart=/tmp/startup_script.sh
+TimeoutStartSec=0
+
+[Install]
+WantedBy=default.target
+ 
+
+Step 3.2: Run script at startup with systemd after all systemd services are loaded
+Now in this senario we must make sure all the systemd services for the respective target has loaded before starting the script. So to run script at startup with systemd after all systemd services are loaded we must defined our After= directive accordingly. Since the default.target will vary based on environment so rather than specifying specific target name we will use After=default.target so systemd will decide on it’s own the default.target and will call the script at startup in Linux.
+
+[root@centos-8 ~]# cat /etc/systemd/system/run-at-startup.service
+[Unit]
+Description=Run script at startup after all systemd services are loaded
+After=default.target
+
+[Service]
+Type=simple
+RemainAfterExit=yes
+ExecStart=/tmp/startup_script.sh
+TimeoutStartSec=0
+
+[Install]
+WantedBy=default.target
+ 
+
+Step 3.3: Run script at startup with systemd after login prompt appears
+Now in this scenario also we will only play around After= directive of the unit file. Now since the requirement is to run script at startup with systemd after login prompt appears then we will use After=getty.target
+
+[root@centos-8 ~]# cat /etc/systemd/system/run-at-startup.service
+[Unit]
+Description=Run script at startup after all systemd services are loaded
+After=getty.target
+
+[Service]
+Type=simple
+RemainAfterExit=yes
+ExecStart=/tmp/startup_script.sh
+TimeoutStartSec=0
+
+[Install]
+WantedBy=default.target
+Here,
+
+After=        If the script needs any other system facilities (networking, etc), modify the [Unit] section to include appropriate 
+		   After=, Wants=, or Requires= directives, as described in: man systemd.unit
+
+Type=              Switch Type=simple for Type=idle in the [Service] section to delay execution of the script until all other 
+		   jobs are dispatched (see man systemd.service for even more choices -- e.g., Type=oneshot can be useful in concert with other services).
+
+TimeoutStartSec=   When a service doesn't signal start-up completion within TimeoutStartSec, systemd considers the service failed;
+		   for long-running shell scripts it is essential to modify TimeoutStartSec or disable the timeout logic altogether 
+		   as above, with TimeoutStartSec=0. See man systemd.service for more details.
+Here if you observe we have defined After=network.target to make sure the script
+
+ 
+
+Refresh the systemd configuration files and enable the service
+
+[root@centos-8 ~]# systemctl daemon-reload
+[root@centos-8 ~]# systemctl enable run-at-startup.service
+ 
+
+Step 4: Verify the systemd unit file configuration
+Now our configuration is in place to run script at startup in CentOS/RHEL 7/8 Linux.
+
+HINT:
+Advertisements
+You can also use systemctl list-jobs within the script to monitor the list of active jobs when the script was executed at startup.
+Now post reboot of the Linux node we can see that our startup_script.sh is running in the background
+
+[root@centos-8 ~]# ps -ef | grep startup
+root       805     1  0 11:38 ?        00:00:00 /bin/bash /tmp/startup_script.sh
+root      1198  1147  0 11:39 pts/0    00:00:00 grep --color=auto startup
+Also in some time we start getting the broadcast messages from root user.
+
+Broadcast message from root@centos-8.example.com (somewhere) (Thu Jan 16 11:39:
+
+startup_script.sh: finished minute 1
+
+
+Broadcast message from root@centos-8.example.com (somewhere) (Thu Jan 16 11:40:
+
+startup_script.sh: finished minute 2
+
+
+Broadcast message from root@centos-8.example.com (somewhere) (Thu Jan 16 11:41:
+
+startup_script.sh: finished minute 3
+
+
+Broadcast message from root@centos-8.example.com (somewhere) (Thu Jan 16 11:42:
+
+startup_script.sh: finished minute 4
+
+
+Broadcast message from root@centos-8.example.com (somewhere) (Thu Jan 16 11:43:
+
+startup_script.sh: finished minute 5
+
+
+Broadcast message from root@centos-8.example.com (somewhere) (Thu Jan 16 11:43:
+
+startup_script.sh: COMPLETELY FINISHED
+I have verified the script for both scenarios to run script at startup with systemd (witout crontab) in Linux but I am not putting output from both scenarios as the output is same in both case.
+
+NOTE:
+After boot, use systemd-analyze plot > file.svg to generate an image of the boot process for inspection. You can use any browser to view this file.svg and verify the boot process. There could be one or two short-lived services starting after run-at-startup.service. If that’s a problem, modify /etc/systemd/system/run-at-startup.service to set Type=idle
+ 
+
+Lastly I hope the steps from the article to run script at startup with systemd without using crontab in CentOS/RHEL 7/8 Linux was helpful. So, let me know your suggestions and feedback using the comment section.
+
+ 
+
+Related Searches: How to execute script at startup as soon as network is reacable in Linux. How to call a script or execute command at Linux startup once the login prompt is visible in Linux. How to execute script with systemd at startup once all the systemd services are loaded in RHEL/CentOS 7/8 Linux with examples. How to run script at startup with crontab and cron job. how to add startup scripts in redhat linux 7. run script on startup.
