@@ -1,0 +1,197 @@
+https://www.cyberithub.com/sed-command-in-linux-part-1/
+
+Sed Command Examples
+1. Check Sed Command Version
+2. Print 1st Line of /etc/passwd
+3. Print 6th Line of /etc/passwd
+4. Print Line 1 to Line 6 of /etc/passwd 
+5. Print Line 1 and Line 6 only of /etc/passwd
+6. Print Last Line of /etc/passwd
+7. Print Last 2 Lines of /etc/passwd
+8. Print Every Alternate Line of /etc/passwd
+9. Print all Lines which contains ‘root’ keyword
+10. Print all Lines which does not contain ‘root’ keyword
+11. Print all Lines which starts with ‘root’ Keyword
+12. Print all Lines which does not start with ‘root’ Keyword
+13. Print all Lines which ends with ‘bash’ Keyword
+14. Print all Lines which does not end with ‘bash’ Keyword
+15. Print all Lines which contain either ‘root’ or ‘bash’ keyword in /etc/passwd
+16. Print all Lines which does not contain either ‘root’ or ‘bash’ keyword in /etc/passwd
+17. Print all Lines which contains digit ‘4’ or ‘5’
+18. Print all Lines which does not contain digit ‘4’ or ‘5’
+19. Print all Lines which contains character ‘y’ or ‘z’
+20. Print all Lines which does not contains character ‘y’ or ‘z’
+
+
+3. Print 6th Line of /etc/passwd
+If you want to print only the 6th Line of /etc/passwd file, then you need to use 6p with -n option as shown below.
+
+[root@localhost ~]# sed -n 6p /etc/passwd
+sync:x:5:0:sync:/sbin:/bin/sync
+4. Print Line 1 to Line 6 of /etc/passwd 
+If you want to print Line 1 to Line 6 of /etc/passwd, then you need to use 1,6p with -n option as shown below.
+
+[root@localhost ~]# sed -n '1,6p' /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+bin:x:1:1:bin:/bin:/sbin/nologin
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+adm:x:3:4:adm:/var/adm:/sbin/nologin
+lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin
+sync:x:5:0:sync:/sbin:/bin/sync
+5. Print Line 1 and Line 6 only of /etc/passwd
+If you want to print only Line 1 and Line 6 of /etc/passwd file, then you need to use 1p and 6p with -e option as shown below.
+
+[root@localhost ~]# sed -n -e 1p -e 6p /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+sync:x:5:0:sync:/sbin:/bin/sync
+-e: add the script to the commands to be executed.
+
+6. Print Last Line of /etc/passwd
+Sometimes often the case that you don’t know how big the file is and what is the last line number of a file. In those scenarios, using this sed command would be very much helpful where you can print the last line of a file without using the line number.
+
+[root@localhost ~]# sed -n '$p' /etc/passwd
+zookeeper:x:1000:1000::/home/zookeeper:/bin/bash
+7. Print Last 2 Lines of /etc/passwd
+If you want to print last two lines of /etc/passwd, then you need to use $!N;$!D with sed command as shown below.
+
+[root@localhost ~]# sed '$!N;$!D' /etc/passwd
+opscode-pgsql:x:995:992::/var/opt/opscode/postgresql:/bin/sh
+zookeeper:x:1000:1000::/home/zookeeper:/bin/bash
+N: Read/append the next line of input into the pattern space.
+
+D: If pattern space contains no newline, start a normal new cycle as if the d command was issued. Otherwise, delete text in the pattern space up to the first newline, and restart cycle with the resultant pattern space, without reading a new line of input. For more information, visit Sed Man Page.
+
+8. Print Every Alternate Line of /etc/passwd
+If you want to print every alternate line of /etc/passwd file, then you need to use n;d with sed command as shown below.
+
+[root@localhost ~]# sed 'n;d' /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin
+shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
+mail:x:8:12:mail:/var/spool/mail:/sbin/nologin
+games:x:12:100:games:/usr/games:/sbin/nologin
+n: Read/append the next line of input into the pattern space.
+
+d: Delete pattern space. Start next cycle.
+
+9. Print all Lines which contains ‘root’ keyword
+If you want to print all the lines of /etc/passwd which contains keyword root, then you need to match the root keyword as shown below. Here, you can see three lines from /etc/passwd file which contains root keyword.
+
+[root@localhost ~]# sed -n '/root/p' /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+operator:x:11:0:operator:/root:/sbin/nologin
+dockerroot:x:997:994:Docker User:/var/lib/docker:/sbin/nologin
+10. Print all Lines which does not contain ‘root’ keyword
+If you want to print all Lines that does not contain root keyword, then you need to use exclamation(!) with p as shown below. As you can see from below output, there are multiple lines which does not have root keyword.
+
+[root@localhost ~]# sed -n '/root/!p' /etc/passwd
+bin:x:1:1:bin:/bin:/sbin/nologin
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+adm:x:3:4:adm:/var/adm:/sbin/nologin
+lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin
+sync:x:5:0:sync:/sbin:/bin/sync
+shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
+halt:x:7:0:halt:/sbin:/sbin/halt
+mail:x:8:12:mail:/var/spool/mail:/sbin/nologin
+11. Print all Lines which starts with ‘root’ Keyword
+If you want to print only those lines which starts with root keyword, then you can use ^ operator in the matching pattern as shown below. As you can see, there is only one line which contains root keyword in the beginning.
+
+[root@localhost ~]# sed -n '/^root/p' /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+12. Print all Lines which does not start with ‘root’ Keyword
+If you want to print only those lines which does not start with root keyword, then you need to use exclamation mark(!) with print(p) as shown below.
+
+[root@localhost ~]# sed -n '/^root/!p' /etc/passwd
+bin:x:1:1:bin:/bin:/sbin/nologin
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+adm:x:3:4:adm:/var/adm:/sbin/nologin
+lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin
+sync:x:5:0:sync:/sbin:/bin/sync
+shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
+halt:x:7:0:halt:/sbin:/sbin/halt
+13. Print all Lines which ends with ‘bash’ Keyword
+If you want to print only those lines which ends with bash keyword, then you need to use $ operator at the end of bash keyword in the matching pattern as shown below. As you can see from the output, there are only two such lines which has bash keyword at the end of that line.
+
+[root@localhost ~]# sed -n '/bash$/p' /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+zookeeper:x:1000:1000::/home/zookeeper:/bin/bash
+14. Print all Lines which does not end with ‘bash’ Keyword
+If you want to print only those lines which does not end with bash keyword, then you need to use exclamation mark(!) with print(p) as shown below. You can see from below output that there are multiple lines in /etc/passwd file which does not end with bash keyword.
+
+[root@localhost ~]# sed -n '/bash$/!p' /etc/passwd
+bin:x:1:1:bin:/bin:/sbin/nologin
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+adm:x:3:4:adm:/var/adm:/sbin/nologin
+lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin
+sync:x:5:0:sync:/sbin:/bin/sync
+shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
+halt:x:7:0:halt:/sbin:/sbin/halt
+15. Print all Lines which contain either ‘root’ or ‘bash’ keyword in /etc/passwd
+If you want to print only those lines which contains either root or bash keyword, then you need to use /root\|bash/ in the matching pattern as shown below.
+
+[root@localhost ~]# sed -n '/root\|bash/p' /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+operator:x:11:0:operator:/root:/sbin/nologin
+dockerroot:x:997:994:Docker User:/var/lib/docker:/sbin/nologin
+zookeeper:x:1000:1000::/home/zookeeper:/bin/bash
+16. Print all Lines which does not contain either ‘root’ or ‘bash’ keyword in /etc/passwd
+If you want to print only those lines which does not contain either root or bash keyword, then you need to use exclamation mark(!) with print(p) as shown below.
+
+[root@localhost ~]# sed -n '/root\|bash/!p' /etc/passwd
+bin:x:1:1:bin:/bin:/sbin/nologin
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+adm:x:3:4:adm:/var/adm:/sbin/nologin
+lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin
+sync:x:5:0:sync:/sbin:/bin/sync
+shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
+halt:x:7:0:halt:/sbin:/sbin/halt
+mail:x:8:12:mail:/var/spool/mail:/sbin/nologin
+17. Print all Lines which contains digit ‘4’ or ‘5’
+If you want to print only those lines which contains digit 4 or 5, then you need to use range /4-5/ in matching pattern as shown below.
+
+[root@localhost ~]# sed -n '/[4-5]/p' /etc/passwd
+adm:x:3:4:adm:/var/adm:/sbin/nologin
+lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin
+sync:x:5:0:sync:/sbin:/bin/sync
+ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin
+sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin
+dockerroot:x:997:994:Docker User:/var/lib/docker:/sbin/nologin
+opscode-pgsql:x:995:992::/var/opt/opscode/postgresql:/bin/sh
+18. Print all Lines which does not contain digit ‘4’ or ‘5’
+If you want to print only those lines which does not contain digit 4 or 5, then you need to use exclamation mark(!) with print(p) as shown below.
+
+[root@localhost ~]# sed -n '/[4-5]/!p' /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+bin:x:1:1:bin:/bin:/sbin/nologin
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
+halt:x:7:0:halt:/sbin:/sbin/halt
+mail:x:8:12:mail:/var/spool/mail:/sbin/nologin
+operator:x:11:0:operator:/root:/sbin/nologin
+games:x:12:100:games:/usr/games:/sbin/nologin
+nobody:x:99:99:Nobody:/:/sbin/nologin
+systemd-network:x:192:192:systemd Network Management:/:/sbin/nologin
+19. Print all Lines which contains character ‘y’ or ‘z’
+If you want to print only those lines from /etc/passwd file which contains character y or z, then you can use /[y-z]/ in the matching pattern as shown below.
+
+[root@localhost ~]# sed -n '/[y-z]/p' /etc/passwd
+sync:x:5:0:sync:/sbin:/bin/sync
+nobody:x:99:99:Nobody:/:/sbin/nologin
+systemd-network:x:192:192:systemd Network Management:/:/sbin/nologin
+dbus:x:81:81:System message bus:/:/sbin/nologin
+sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin
+chrony:x:998:996::/var/lib/chrony:/sbin/nologin
+zookeeper:x:1000:1000::/home/zookeeper:/bin/bash
+20. Print all Lines which does not contains character ‘y’ or ‘z’
+If you want to print all the lines from /etc/passwd file which does not contains character y and z, then you need to use exclamation mark(!) with p to achieve that as shown below.
+
+[root@localhost ~]# sed -n '/[y-z]/!p' /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+bin:x:1:1:bin:/bin:/sbin/nologin
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+adm:x:3:4:adm:/var/adm:/sbin/nologin
+lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin
+shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
+halt:x:7:0:halt:/sbin:/sbin/halt
+mail:x:8:12:mail:/var/spool/mail:/sbin/nologin
